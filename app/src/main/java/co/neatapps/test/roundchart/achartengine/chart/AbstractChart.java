@@ -15,6 +15,15 @@
  */
 package co.neatapps.test.roundchart.achartengine.chart;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
+import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.RectF;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.List;
@@ -26,15 +35,6 @@ import co.neatapps.test.roundchart.achartengine.renderer.SimpleSeriesRenderer;
 import co.neatapps.test.roundchart.achartengine.renderer.XYMultipleSeriesRenderer;
 import co.neatapps.test.roundchart.achartengine.renderer.XYMultipleSeriesRenderer.Orientation;
 import co.neatapps.test.roundchart.achartengine.util.MathHelper;
-
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.graphics.RectF;
 
 /**
  * An abstract class to be implemented by the chart rendering classes.
@@ -400,7 +400,7 @@ public abstract class AbstractChart implements Serializable {
      * @param paint the paint
      * @return the text to fit into the space
      */
-    private String getFitText(String text, float width, Paint paint) {
+    public static String getFitText(String text, float width, Paint paint) {
         String newText = text;
         int length = text.length();
         int diff = 0;

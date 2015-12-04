@@ -15,6 +15,9 @@
  */
 package co.neatapps.test.roundchart.achartengine;
 
+import android.content.Context;
+import android.content.Intent;
+
 import co.neatapps.test.roundchart.achartengine.chart.BarChart;
 import co.neatapps.test.roundchart.achartengine.chart.BarChart.Type;
 import co.neatapps.test.roundchart.achartengine.chart.BubbleChart;
@@ -25,6 +28,7 @@ import co.neatapps.test.roundchart.achartengine.chart.DialChart;
 import co.neatapps.test.roundchart.achartengine.chart.DoughnutChart;
 import co.neatapps.test.roundchart.achartengine.chart.LineChart;
 import co.neatapps.test.roundchart.achartengine.chart.PieChart;
+import co.neatapps.test.roundchart.achartengine.chart.PieChartStickOut;
 import co.neatapps.test.roundchart.achartengine.chart.RangeBarChart;
 import co.neatapps.test.roundchart.achartengine.chart.ScatterChart;
 import co.neatapps.test.roundchart.achartengine.chart.TimeChart;
@@ -35,9 +39,6 @@ import co.neatapps.test.roundchart.achartengine.model.XYMultipleSeriesDataset;
 import co.neatapps.test.roundchart.achartengine.renderer.DefaultRenderer;
 import co.neatapps.test.roundchart.achartengine.renderer.DialRenderer;
 import co.neatapps.test.roundchart.achartengine.renderer.XYMultipleSeriesRenderer;
-
-import android.content.Context;
-import android.content.Intent;
 
 /**
  * Utility methods for creating chart views or intents.
@@ -219,6 +220,13 @@ public class ChartFactory {
                                                       DefaultRenderer renderer) {
         checkParameters(dataset, renderer);
         PieChart chart = new PieChart(dataset, renderer);
+        return new GraphicalView(context, chart);
+    }
+
+    public static final GraphicalView getPieChartStickOutView(
+            Context context, CategorySeries dataset, DefaultRenderer renderer) {
+        checkParameters(dataset, renderer);
+        PieChartStickOut chart = new PieChartStickOut(dataset, renderer);
         return new GraphicalView(context, chart);
     }
 

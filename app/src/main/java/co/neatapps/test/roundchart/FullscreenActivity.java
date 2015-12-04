@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import co.neatapps.test.roundchart.achartengine.ChartFactory;
@@ -24,25 +23,18 @@ public class FullscreenActivity extends AppCompatActivity {
             actionBar.hide();
         }
         setContentView(R.layout.activity_fullscreen);
-    }
 
-    public void onClick(View view) {
-        int id = view.getId();
-
-        if (id == R.id.rl) {
-            RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
-            GraphicalView pieGraph = getPieGraph(this);
-            rl.addView(pieGraph);
-        }
-
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+        GraphicalView pieGraph = getPieGraph(this);
+        rl.addView(pieGraph);
     }
 
     public GraphicalView getPieGraph(Context context) {
 
-        int[] values = {1, 2, 3, 4, 5};
+        double[] values = {1, 2, 3, 4, 5};
         CategorySeries series = new CategorySeries("Pie Graph");
         int k = 0;
-        for (int value : values) {
+        for (double value : values) {
             series.add("Section " + ++k, value);
         }
 
@@ -52,12 +44,13 @@ public class FullscreenActivity extends AppCompatActivity {
         for (int color : colors) {
             SimpleSeriesRenderer r = new SimpleSeriesRenderer();
             r.setColor(color);
+            if (color == Color.GREEN) {
+                r.setHighlighted(true);
+            }
             renderer.addSeriesRenderer(r);
         }
-        renderer.setChartTitle("Pie Chart Demo");
-        renderer.setChartTitleTextSize(7);
 
-        return ChartFactory.getPieChartView(context, series, renderer);
+        return ChartFactory.getPieChartStickOutView(context, series, renderer);
     }
 
 }
