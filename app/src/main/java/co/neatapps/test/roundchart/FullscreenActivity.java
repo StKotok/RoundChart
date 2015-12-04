@@ -1,22 +1,20 @@
 package co.neatapps.test.roundchart;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
+import co.neatapps.test.roundchart.achartengine.ChartFactory;
+import co.neatapps.test.roundchart.achartengine.GraphicalView;
+import co.neatapps.test.roundchart.achartengine.model.CategorySeries;
+import co.neatapps.test.roundchart.achartengine.renderer.DefaultRenderer;
+import co.neatapps.test.roundchart.achartengine.renderer.SimpleSeriesRenderer;
+
 public class FullscreenActivity extends AppCompatActivity {
-    float touchX = 0;
-    float touchY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,34 +24,40 @@ public class FullscreenActivity extends AppCompatActivity {
             actionBar.hide();
         }
         setContentView(R.layout.activity_fullscreen);
-
-        GraphicsView view = new GraphicsView(this);
-        setContentView(view);
     }
 
-    public class GraphicsView extends View {
+    public void onClick(View view) {
+        int id = view.getId();
 
-        private Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-
-        public GraphicsView(Context context) {
-            super(context);
+        if (id == R.id.rl) {
+            RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+            GraphicalView pieGraph = getPieGraph(this);
+            rl.addView(pieGraph);
         }
 
-        @Override
-        protected void onDraw(Canvas canvas) {
-
-            canvas.drawBitmap(bitmap, touchX, touchY, null);
-
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                touchX = event.getX();
-                touchY = event.getY();
-                invalidate();
-            }
-            return true;
-        }
     }
+
+    public GraphicalView getPieGraph(Context context) {
+
+        int[] values = {1, 2, 3, 4, 5};
+        CategorySeries series = new CategorySeries("Pie Graph");
+        int k = 0;
+        for (int value : values) {
+            series.add("Section " + ++k, value);
+        }
+
+        int[] colors = new int[]{Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN};
+
+        DefaultRenderer renderer = new DefaultRenderer();
+        for (int color : colors) {
+            SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+            r.setColor(color);
+            renderer.addSeriesRenderer(r);
+        }
+        renderer.setChartTitle("Pie Chart Demo");
+        renderer.setChartTitleTextSize(7);
+
+        return ChartFactory.getPieChartView(context, series, renderer);
+    }
+
 }
